@@ -81,7 +81,7 @@ router.post('/actions/add-to-pipedrive', async (req, res) => {
     return res.status(400).send({ error: 'An organization id from Pipedrive is already assigned to this company' });
   }
   return superagent
-    .post(`https://api.pipedrive.com/v1/organizations?ai_token=${process.env.PIPEDRIVE_API_KEY}`)
+    .post(`https://api.pipedrive.com/v1/organizations?api_token=${process.env.PIPEDRIVE_API_KEY}`)
     .send({
       // list here the attributes to be used to create the entry in Pipedrive
       name: company.name,
@@ -91,7 +91,7 @@ router.post('/actions/add-to-pipedrive', async (req, res) => {
       company.pipedriveId = pipedriveOrganization.data.id
       return company.save();
     })
-    .then(() => res.send({ success: 'Lead has been created in Pipedrive!' }))
+    .then(() => res.send({ success: 'Organization has been created in Pipedrive!' }))
     .catch((e) => {
       console.log(e);
       return res.status(400).send({ error: 'could not create organization' })
