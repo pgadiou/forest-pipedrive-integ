@@ -8,6 +8,7 @@ const { collection } = require('forest-express-sequelize');
 collection('companies', {
   actions: [{
     name: 'add to pipedrive',
+    type: 'single',
   }],
   fields: [{
     field: 'pipedriveLink',
