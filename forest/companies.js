@@ -7,14 +7,6 @@ const { collection } = require('forest-express-sequelize');
 // - Smart segments: https://docs.forestadmin.com/documentation/reference-guide/segments/smart-segments
 collection('companies', {
   actions: [],
-  fields: [{
-    field: 'pipedriveLink',
-    type: 'String',
-    get: (record) => `https://${process.env.PIPEDRIVE_DOMAIN}.pipedrive.com/organization/${record.pipedriveId}`,
-  },{
-    field: 'pipedrivePersons',
-    type: ['String'],
-    reference: 'pipedrivePersons.id',
-  }],
+  fields: [],
   segments: [],
 });
