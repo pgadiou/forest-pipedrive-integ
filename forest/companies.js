@@ -11,6 +11,10 @@ collection('companies', {
     field: 'pipedriveLink',
     type: 'String',
     get: (record) => `https://${process.env.PIPEDRIVE_DOMAIN}.pipedrive.com/organization/${record.pipedriveId}`,
+  }, {
+    field: 'pipedrivePersons',
+    type: ['String'],
+    reference: 'pipedrivePersons.id',
   }],
   segments: [],
 });
