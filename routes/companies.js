@@ -73,22 +73,6 @@ router.delete('/companies', permissionMiddlewareCreator.delete(), (request, resp
   next();
 });
 
-// function that update a company record pipedriveId with the Pipedrive organization_id
-function setPipedriveId(record, pipedriveId) {
-  record.pipedriveId = pipedriveId;
-  return record.save();
-}
-
-// function that creates a company in Hubspot through the hubspot API
-function addPipedriveOrganization(company) {
-  return superagent
-    .post(`https://api.pipedrive.com/v1/organizations?api_token=${process.env.PIPEDRIVE_API_KEY}`)
-    .send({
-      name: 'name',
-    })
-    .then((response) => JSON.parse(response.res.text));
-}
-
 router.post('/actions/add-to-pipedrive', async (req, res) => {
   const companyId = req.body.data.attributes.ids[0];
   const company = await companies.findByPk(companyId);
