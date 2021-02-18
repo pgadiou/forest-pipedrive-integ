@@ -13,7 +13,7 @@ collection('companies', {
   fields: [{
     field: 'pipedriveLink',
     type: 'String',
-    get: (record) => `https://${process.env.PIPEDRIVE_DOMAIN}.pipedrive.com/organization/${record.pipedriveId}`,
+    get: (record) => record.pipedriveId ? `https://${process.env.PIPEDRIVE_DOMAIN}.pipedrive.com/organization/${record.pipedriveId}` : null,
   }, {
     field: 'pipedrivePersons',
     type: ['String'],
