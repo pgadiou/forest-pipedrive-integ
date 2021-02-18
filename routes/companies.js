@@ -73,4 +73,45 @@ router.delete('/companies', permissionMiddlewareCreator.delete(), (request, resp
   next();
 });
 
+// function that update a company record pipedriveId with the Pipedrive organization_id
+function setPipedriveId(record, pipedriveId) {
+  record.pipedriveId = pipedriveId;
+  return record.save();
+}
+
+// function that creates a company in Hubspot through the hubspot API
+function addPipedriveOrganization(company) {
+  return superagent
+    .post(`https://api.pipedrive.com/v1/organizations?api_token=${process.env.PIPEDRIVE_API_KEY}`)
+    .send({
+      name: 'name',
+    })
+    .then((response) => JSON.parse(response.res.text));
+}
+
+router.post('/actions/add-to-pipedrive', async (req, res) => {
+  const companyId = req.body.data.attributes.ids[0];
+  const company = await companies.findByPk(companyId);
+
+  if (company.pipedriveId) {
+    return res.status(400).send({ error: 'An organization id from Pipedrive is already assigned to this company' });
+  }
+  return superagent
+    .post(`https://api.pipedrive.com/v1/organizations?ai_token=${process.env.PIPEDRIVE_API_KEY}`)
+    .send({
+      // list here the attributes to be used to create the entry in Pipedrive
+      name: company.name,
+    })
+    .then((response) => JSON.parse(response.res.text))
+    .then((pipedriveOrganization) => {
+      company.pipedriveId = pipedriveOrganization.data.id
+      return company.save();
+    })
+    .then(() => res.send({ success: 'Lead has been created in Pipedrive!' }))
+    .catch((e) => {
+      console.log(e);
+      return res.status(400).send({ error: 'could not create organization' })
+    });
+});
+
 module.exports = router;

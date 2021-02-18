@@ -6,7 +6,9 @@ const { collection } = require('forest-express-sequelize');
 // - Smart relationships: https://docs.forestadmin.com/documentation/reference-guide/relationships/create-a-smart-relationship
 // - Smart segments: https://docs.forestadmin.com/documentation/reference-guide/segments/smart-segments
 collection('companies', {
-  actions: [],
+  actions: [{
+    name: 'add to pipedrive',
+  }],
   fields: [{
     field: 'pipedriveLink',
     type: 'String',
